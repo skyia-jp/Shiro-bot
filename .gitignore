@@ -9,6 +9,7 @@ k8s/sealed/raw_env.yaml
 
 # Dependencies & build artifacts
 node_modules/
+package-lock.json
 dist/
 build/
 tmp/
