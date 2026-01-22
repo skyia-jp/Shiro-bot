@@ -5,6 +5,7 @@ import {
   ButtonStyle,
   ChannelType,
   EmbedBuilder,
+  PermissionFlagsBits,
   SlashCommandBuilder,
   StringSelectMenuBuilder
 } from 'discord.js';
@@ -624,6 +625,7 @@ export default {
     .setName('shop')
     .setDescription('ギルド内ショップを管理します。')
     .setDMPermission(false)
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
     .addSubcommandGroup((group) =>
       group
         .setName('item')
@@ -682,6 +684,12 @@ export default {
     ),
   async execute(client: any, interaction: any) {
     if (interaction.isChatInputCommand() && interaction.commandName === 'shop') {
+      // Runtime permission check - restrict to administrators only
+      if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)) {
+        await interaction.reply({ content: 'このコマンドを使用する権限がありません。', ephemeral: true });
+        return;
+      }
+
       const subcommandGroup = interaction.options.getSubcommandGroup(false);
       const subcommand = interaction.options.getSubcommand();
 
