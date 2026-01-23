@@ -7,3 +7,4 @@ resources:
   - mysql-statefulset.yaml
   - mysql-service.yaml
   - sealed/env.yaml
+  - sealed/harbor-sealed.yaml
