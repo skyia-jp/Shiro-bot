@@ -31,7 +31,7 @@ spec:
                 sleep 3
               done
         - name: prisma-migrate
-          image: registry.uniproject.jp/ibuki/shiro-bot:2.1.5
+          image: registry.uniproject.jp/ibuki/shiro-bot:2.1.6
           command:
             - sh
             - -c
@@ -43,7 +43,7 @@ spec:
                 name: shiro-bot-config
       containers:
         - name: bot
-          image: registry.uniproject.jp/ibuki/shiro-bot:2.1.5
+          image: registry.uniproject.jp/ibuki/shiro-bot:2.1.6
           imagePullPolicy: Always
           command:
             - sh
