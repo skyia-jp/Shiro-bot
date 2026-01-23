@@ -29,7 +29,7 @@ spec:
                 sleep 3
               done
         - name: prisma-migrate
-          image: kemar1/shiro-bot:latest
+          image: registry.uniproject.jp/ibuki:latest
           command:
             - sh
             - -c
