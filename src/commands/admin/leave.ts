@@ -1,5 +1,6 @@
 import { PermissionFlagsBits, SlashCommandBuilder, Client, ChatInputCommandInteraction } from 'discord.js';
 import { buildInteractionLogger } from '../../utils/logger.js';
+import { OWNER_IDS } from '../../config/constants.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -14,6 +15,19 @@ export default {
     const targetGuildId = specifiedGuildId ?? interaction.guildId ?? null;
     const logger = buildInteractionLogger(interaction, { module: 'command:leave', target_guild_id: targetGuildId ?? undefined });
     const ephemeral = interaction.inGuild();
+
+    // Explicit permission check: only bot owners or guild members with ManageGuild can use this command
+    const isOwner = OWNER_IDS.includes(interaction.user.id);
+    const hasGuildPermission = interaction.inGuild() && interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild);
+
+    if (!isOwner && !hasGuildPermission) {
+      const errorMessage = interaction.inGuild()
+        ? 'このコマンドはサーバーの管理権限を持つユーザーのみ実行できます。'
+        : 'このコマンドは DM から実行できません。サーバー内で実行するか、権限のあるユーザーとしてご利用ください。';
+      await interaction.reply({ content: errorMessage, ephemeral: true }).catch(() => null);
+      logger.warn({ event: 'command.leave.permission_denied', user_id: interaction.user.id, in_guild: interaction.inGuild() });
+      return;
+    }
 
     const respond = async (content: string) => {
       if (interaction.replied || interaction.deferred) {
