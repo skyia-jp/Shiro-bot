@@ -40,7 +40,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5
         with:
-          images: registry.uniproject.jp/infra/unique-api
+          images: registry.uniproject.jp/ibuki/shiro-bot
           tags: |
             type=raw,value=latest
             type=semver,pattern={{version}}
