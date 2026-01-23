@@ -16,6 +16,8 @@ spec:
       labels:
         app: shiro-bot
     spec:
+      imagePullSecrets:
+        - name: shiro-bot-harbor-regcred
       initContainers:
         - name: wait-for-mysql
           image: node:24-trixie-slim
