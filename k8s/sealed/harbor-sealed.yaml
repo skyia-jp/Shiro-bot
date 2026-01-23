@@ -1,0 +1,14 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: shiro-bot-harbor-regcred
+  namespace: ibuki-shiro-bot
+spec:
+  encryptedData:
+    .dockerconfigjson: AgA5eK89pmP5+SnPOsUJ7rorKY5d/RDTdAfmGvwjV6QjvBNZcWw9PdKSf0F3EaX70eT+frd0MMvuOPlOGHqbWsVd74NYkS4GP4MmwgqVgdzfBWJadV/ij703cyrsUmMsdUUoAGEdCnAOOGKQkTw5xHdtda/uyi7kR139a9HvkYpvVJrKnyWpjWI73TSGTneLpPCLmfTMZI7mElK7c3qj06XAj7dCgxh1QbymgCDqLvHpP0DJmY9GXyI95R2ZKD3jzTdow22hejqBdTgq9f1jQ2IsHlYNZ1/9NZLDzfVF+PNtTwuSvIAdnRaMsSNmv5CRDe1AvqurJyL0bQVgmzFcO6XjAP3Dperxl3xcXYhrwdkOC/M6YWcE421YQHJslitzkgaty/XY0d2X/zidAQOAwF+VTik6afojXAm69NZ2V8P9CGA/LM9VYEqTzdj+8CwTvJNMKjAZCF4d/tLgNkhhT95Gzx+LIV3+hAfdlf+Lw6L+vvTufdCiWr6juOUL4m2Z2DD16NKgmY/9OyG5vIXl/1XRL5XKFC+KahX4a+XkVBjpGh8zyEPhQxCrgKPy5uzrcYd8oqNkc94BW21I0I0SnFaCDtLFItbdsfUvHwJt0DlDW3KGtbvwUecMsDUivGf4sS5gGC1sgBZu9QSRCfKC5X4bvvlNBRwZ4HEhLyXXlPsd70lMY0lphfZCI0dBc/haLqIGfYhHLUyEcYcI7gC9KwEIF87vRXpp3kmdqR6+i/pMwKkJcbY79tPH2V55LJoZzwrG41+fikYKcmikzXUUFOcwpsdz4NMsuIJDdq2442AvSgZK1UuhdHykD7TudmNa2xGAaOMvL2/VKByg9bDStX8uLic7rBTo6or0plbGwFqSCHXDO0vMxbTmteyxyjtiVToWM3co2MnU2X7elhlRklNbMA==
+  template:
+    metadata:
+      name: shiro-bot-harbor-regcred
+      namespace: ibuki-shiro-bot
+    type: kubernetes.io/dockerconfigjson
