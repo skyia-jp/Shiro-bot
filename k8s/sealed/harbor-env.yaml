@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: shiro-bot-harbor-regcred
+  namespace: ibuki-shiro-bot
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: ew0KICAiYXV0aHMiOiB7DQogICAgInJlZ2lzdHJ5LnVuaXByb2plY3QuanAiOiB7DQogICAgICAidXNlcm5hbWUiOiAiaWJ1a2kiLA0KICAgICAgInBhc3N3b3JkIjogIndQaFlna1RYN1pRdSIsDQogICAgICAiYXV0aCI6ICJhV0oxYTJrNmQxQm9XV2RyVkZnM1dsRjEiDQogICAgfQ0KICB9DQp9

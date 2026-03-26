@@ -11,6 +11,8 @@ k8s/sealed/raw_env.yaml
 node_modules/
 dist/
 build/
+bin/
+*.exe
 tmp/
 .tmp/
 

@@ -14,5 +14,7 @@ dist
 build
 logs
 *.log
+bin
+*.exe
 **/*.sqlite
 prisma/migrations/*/*.sqlite

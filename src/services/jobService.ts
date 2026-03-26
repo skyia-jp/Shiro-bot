@@ -33,8 +33,22 @@ async function runActivitySummary(client: any, job: any) {
   const leaderboard = await getActivityLeaderboard(guild.id, job.data?.days ?? 7, job.data?.limit ?? 5);
   if (!leaderboard.length) return;
 
+  // Resolve Discord member display names for the leaderboard so we don't show `Unknown`.
+  const resolvedNames = new Map<string, string>();
+  await Promise.all(
+    leaderboard.map(async (entry: any) => {
+      try {
+        const member = await guild.members.fetch(entry.discordUserId).catch(() => null);
+        const display = member ? (member.displayName || member.user?.username || `<@${entry.discordUserId}>`) : `<@${entry.discordUserId}>`;
+        resolvedNames.set(entry.discordUserId, display);
+      } catch {
+        resolvedNames.set(entry.discordUserId, `<@${entry.discordUserId}>`);
+      }
+    })
+  );
+
   const lines = leaderboard.map((entry: any, index: number) => {
-    const name = entry.user?.username ?? entry.user?.discordId ?? 'Unknown';
+    const name = resolvedNames.get(entry.discordUserId) ?? `<@${entry.discordUserId}>`;
     return `${index + 1}. **${name}** - メッセージ ${entry.messageCount}件 / VC ${entry.voiceMinutes}分`;
   });
 

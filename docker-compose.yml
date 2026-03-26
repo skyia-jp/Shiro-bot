@@ -8,31 +8,29 @@ services:
     env_file:
       - .env
     depends_on:
-      mysql:
+      postgres:
         condition: service_healthy
-    # 開発時はソースをマウントして bun run dev を使う。production ではマウントを外し、bun start を使ってください。
-    volumes:
-      - ./:/app
-    command: bun run dev
+    environment:
+      ENVIRONMENT: production
+      DATABASE_URL: postgres://bot:botpassword@postgres:5432/discord_bot?sslmode=disable
 
-  mysql:
-    image: mysql:8.3
-    container_name: discord-bot-mysql
+  postgres:
+    image: postgres:16
+    container_name: discord-bot-postgres
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: discord_bot
-      MYSQL_USER: bot
-      MYSQL_PASSWORD: botpassword
+      POSTGRES_DB: discord_bot
+      POSTGRES_USER: bot
+      POSTGRES_PASSWORD: botpassword
     ports:
-      - "3306:3306"
+      - "5432:5432"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD-SHELL", "pg_isready -U bot -d discord_bot"]
       interval: 5s
       timeout: 3s
       retries: 10
     volumes:
-      - mysql-data:/var/lib/mysql
+      - postgres-data:/var/lib/postgresql/data
 
 volumes:
-  mysql-data:
+  postgres-data:
