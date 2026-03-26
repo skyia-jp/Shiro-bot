@@ -1,36 +1,21 @@
 # syntax=docker/dockerfile:1.21
 
-# ----------------------------
-# Build Stage (Bun)
-# ----------------------------
-FROM oven/bun:slim AS builder
+FROM golang:1.23-bookworm AS builder
 WORKDIR /app
 
-# プロジェクト全体をコピー
+COPY go.mod go.sum ./
+RUN go mod download
+
 COPY . .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /out/shiro-bot ./cmd/bot
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /out/deploy-commands ./cmd/cli/deploy-commands
 
-# 依存関係をすべてインストール（devDependencies も含む）
-RUN bun install
-
-# ----------------------------
-# Runtime Stage (本番用)
-# ----------------------------
-FROM oven/bun:slim AS runtime
+FROM gcr.io/distroless/base-debian12:nonroot AS runtime
 WORKDIR /app
 
-# 本番環境に必要なツールだけ追加
-RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends netcat-openbsd bash curl && \
-    rm -rf /var/lib/apt/lists/*
+COPY --from=builder /out/shiro-bot /app/shiro-bot
+COPY --from=builder /out/deploy-commands /app/deploy-commands
 
-# Builder から必要なファイルだけコピー
-COPY --from=builder /app/package.json ./ 
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/src ./src
-COPY --from=builder /app/scripts ./scripts
+ENV ENVIRONMENT=production
 
-ENV NODE_ENV=production
-
-# Bot 起動コマンド
-CMD ["sh", "-c", "bunx --bun prisma migrate deploy && bun run deploy:commands && bun start"]
+ENTRYPOINT ["/app/shiro-bot"]
