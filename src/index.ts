@@ -6,7 +6,7 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const bootstrapLogger = createLogger({ module: 'bootstrap' }) as any;
-
+// This fucking code is over.
 function setupProcessHandlers() {
   process.on('unhandledRejection', (reason: unknown, promise: Promise<unknown>) => {
     const payload: any = {
