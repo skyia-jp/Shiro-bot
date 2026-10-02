@@ -16,7 +16,7 @@ services:
     command: bun run dev
 
   mysql:
-    image: mysql:8.3
+    image: mysql:8.4
     container_name: discord-bot-mysql
     restart: unless-stopped
     environment:
